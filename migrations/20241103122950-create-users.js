@@ -10,24 +10,48 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
+        allowNull: false,
+        validate: {
+          len: [3, 100],
+        },
         type: Sequelize.STRING
       },
       email: {
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+        },
         type: Sequelize.STRING
       },
       password: {
+        allowNull: false,
+        validate: {
+          len: [6, 100],
+        },
         type: Sequelize.TEXT
       },
-      imageProfile: {
+      photoProfile: {
         type: Sequelize.TEXT
+      },
+      role: {
+        type: Sequelize.ENUM('superadmin', 'admin', 'user'),
+        allowNull: false,
+        defaultValue: 'user'
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
       }
     });
   },

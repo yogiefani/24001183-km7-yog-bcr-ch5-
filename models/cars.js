@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      cars.belongsTo(models.users, {
+      Cars.belongsTo(models.Users, {
         foreignKey: 'createdBy',
         as: 'createdByUser'
       });
 
-      cars.belongsTo(models.users, {
+      Cars.belongsTo(models.Users, {
         foreignKey: 'updatedBy',
         as: 'updatedByUser'
       });
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     paranoid: true,
-    modelName: 'cars',
+    modelName: 'Cars',
   });
   return Cars;
 };

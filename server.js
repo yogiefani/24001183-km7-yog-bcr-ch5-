@@ -1,17 +1,23 @@
+require('dotenv').config();
 const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+
+const router = require('./routes');
+const docsRouter = require("./routes/documentation.route");
+const { systemController } = require('./controllers');
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Create a catch-all route for testing the installation.
-app.get('*', (req, res) => res.status(200).send({
-  message: 'Hello World!',
-}));
+app.use(morgan("dev"))
 
-const port = 5000;
+app.get("/api/v1/health-check", systemController.healtcheck);
+app.use("/api/v1", router);
+app.use("/api-docs", docsRouter);
+app.use(systemController.onLost);
 
-app.listen(port, () => {
-  console.log('App is now running at port ', port)
-})
+module.exports = app;
