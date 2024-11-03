@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Users.hasMany(models.Cars,{
+      Users.hasMany(models.cars,{
         foreignKey: 'createdBy',
         as: 'createdByUser'
       });
-      Users.hasMany(models.Cars, {
+      Users.hasMany(models.cars, {
         foreignKey: 'updatedBy',
         as: 'updatedByUser'
       });
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     paranoid: true,
-    modelName: 'Users',
+    modelName: 'users',
     hooks: {
       // Hash password before saving the user
       beforeSave: async (user) => {
