@@ -1,5 +1,6 @@
 const { user } = require("../models");
 
+
 const getUsers = async (req, res) => {
     try {
         const Users = await users.findAll({paranoid: false});
