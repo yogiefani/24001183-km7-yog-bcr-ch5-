@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
   async up (queryInterface, Sequelize) {
     const hashedPassword = await bcrypt.hash('superadminpassword', 10);
-        await queryInterface.bulkInsert('Users', [{
+        await queryInterface.bulkInsert('users', [{
             name: 'Super Admin',
             email: 'super.admin@example.com',
             password: hashedPassword,
@@ -17,6 +17,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Users', null, {});
+    await queryInterface.bulkDelete('users', null, {});
   }
 };

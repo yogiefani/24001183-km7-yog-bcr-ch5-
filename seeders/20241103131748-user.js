@@ -1,7 +1,7 @@
 "use strict";
 
 /** @type {import('sequelize-cli').Migration} */
-const { Users } = require('../models');
+const { users } = require('../models');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -20,7 +20,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert('Users', usersData, {});
+    await queryInterface.bulkInsert('users', usersData, {});
   },
 
   async down(queryInterface, Sequelize) {
