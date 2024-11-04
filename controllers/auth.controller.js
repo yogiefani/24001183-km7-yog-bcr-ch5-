@@ -1,4 +1,4 @@
-const { users } = require("../models");
+const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -6,7 +6,7 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            res.status(400).json({
+            return res.status(400).json({
                 status: "Failed",
                 message: "Please provide email and password",
                 isSuccess: false,
@@ -15,7 +15,7 @@ const login = async (req, res) => {
             
         }
 
-        const user = await users.findOne({ where: { email } });
+        const user = await Users.findOne({ where: { email } });
         if (!user) {
             return res.status(401).json({
                 status: "Failed",
@@ -43,7 +43,7 @@ const login = async (req, res) => {
                 process.env.JWT_SECRET,
                 { expiresIn: process.env.JWT_EXPIRES_IN }
             );
-            res.status(200).json({
+            return res.status(200).json({
                 status: "Success",
                 message: "Login successful. Welcome back!",
                 isSuccess: true,

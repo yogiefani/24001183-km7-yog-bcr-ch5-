@@ -1,0 +1,267 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Car and User API",
+      "version": "1.0.0",
+      "description": "API for managing car and user data, with token-based authentication and role-based access control."
+    },
+    "paths": {
+      "/cars": {
+        "get": {
+          "summary": "Get Cars",
+          "description": "Retrieve a list of cars.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Cars"],
+          "responses": {
+            "200": {
+              "description": "List of all cars.",
+              "content": {
+                "application/json": {
+                  "schema": { "$ref": "#/components/schemas/CarsResponse" }
+                }
+              }
+            },
+            "401": { "$ref": "#/components/responses/Unauthorized" }
+          }
+        },
+        "post": {
+          "summary": "Create Car",
+          "description": "Add a new car entry. Only accessible by admins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Cars"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CarInput" }
+              }
+            }
+          },
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "401": { "$ref": "#/components/responses/Unauthorized" }
+          }
+        }
+      },
+      "/cars/all": {
+        "get": {
+          "summary": "Get All Cars (Admin Only)",
+          "description": "Retrieve all car data, including soft-deleted entries.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Cars"],
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "401": { "$ref": "#/components/responses/Unauthorized" }
+          }
+        }
+      },
+      "/cars/{id}": {
+        "get": {
+          "summary": "Get Car by ID",
+          "description": "Retrieve car data by specific ID.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Cars"],
+          "parameters": [
+            { "$ref": "#/components/parameters/CarId" }
+          ],
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "404": { "$ref": "#/components/responses/NotFound" }
+          }
+        },
+        "put": {
+          "summary": "Update Car by ID",
+          "description": "Update car details by ID. Only accessible by admins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Cars"],
+          "parameters": [
+            { "$ref": "#/components/parameters/CarId" }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CarInput" }
+              }
+            }
+          },
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "404": { "$ref": "#/components/responses/NotFound" }
+          }
+        },
+        "delete": {
+          "summary": "Delete Car by ID",
+          "description": "Delete car entry by ID. Only accessible by admins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Cars"],
+          "parameters": [
+            { "$ref": "#/components/parameters/CarId" }
+          ],
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "404": { "$ref": "#/components/responses/NotFound" }
+          }
+        }
+      },
+      "/users": {
+        "get": {
+          "summary": "Get Users",
+          "description": "Retrieve all user data. Accessible only by admins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Users"],
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "401": { "$ref": "#/components/responses/Unauthorized" }
+          }
+        },
+        "post": {
+          "summary": "Create User",
+          "description": "Create a new user. Accessible only by superadmins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Users"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserInput" }
+              }
+            }
+          },
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "401": { "$ref": "#/components/responses/Unauthorized" }
+          }
+        }
+      },
+      "/users/{id}": {
+        "get": {
+          "summary": "Get User by ID",
+          "description": "Retrieve user data by ID.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Users"],
+          "parameters": [
+            { "$ref": "#/components/parameters/UserId" }
+          ],
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "404": { "$ref": "#/components/responses/NotFound" }
+          }
+        },
+        "put": {
+          "summary": "Update User by ID",
+          "description": "Update user information by ID. Only accessible by superadmins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Users"],
+          "parameters": [
+            { "$ref": "#/components/parameters/UserId" }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserInput" }
+              }
+            }
+          },
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "404": { "$ref": "#/components/responses/NotFound" }
+          }
+        },
+        "delete": {
+          "summary": "Delete User by ID",
+          "description": "Delete user data by ID. Only accessible by superadmins.",
+          "security": [{"bearerAuth": []}],
+          "tags": ["Users"],
+          "parameters": [
+            { "$ref": "#/components/parameters/UserId" }
+          ],
+          "responses": {
+            "200": { "$ref": "#/components/responses/Success" },
+            "404": { "$ref": "#/components/responses/NotFound" }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "CarsResponse": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string", "example": "Success" },
+            "message": { "type": "string", "example": "All cars data retrieved successfully." },
+            "isSuccess": { "type": "boolean", "example": true },
+            "data": { "type": "array", "items": { "$ref": "#/components/schemas/Car" } }
+          }
+        },
+        "CarInput": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "example": "Tesla" },
+            "model": { "type": "string", "example": "Model S" },
+            "desc": { "type": "string", "example": "Electric car" }
+          }
+        },
+        "UserInput": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "example": "John Doe" },
+            "email": { "type": "string", "example": "john@example.com" },
+            "password": { "type": "string", "example": "password123" },
+            "role": { "type": "string", "example": "admin" }
+          }
+        }
+      },
+      "parameters": {
+        "CarId": {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" },
+          "description": "Car ID"
+        },
+        "UserId": {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" },
+          "description": "User ID"
+        }
+      },
+      "responses": {
+        "Success": {
+          "description": "Operation successful",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CarsResponse" }
+            }
+          }
+        },
+        "Unauthorized": {
+          "description": "Unauthorized access",
+          "content": {
+            "application/json": {
+              "schema": { "type": "string", "example": "Unauthorized access" }
+            }
+          }
+        },
+        "NotFound": {
+          "description": "Resource not found",
+          "content": {
+            "application/json": {
+              "schema": { "type": "string", "example": "Resource not found" }
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
+  

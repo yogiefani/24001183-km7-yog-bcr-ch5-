@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const router = require('./routes');
-const docsRouter = require("./routes/documentation.route");
+const docsRouter = require("./routes/docs.route");
 const { systemController } = require('./controllers');
 
 const app = express();
